@@ -2,9 +2,16 @@
   <head>
     <!-- development version, includes helpful console warnings -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="146370768632-uvb7hbnqgnrrkor1ng5lrpphnk34opdl.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
   </head>
   <body>
+    <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+
     <form action="/submit" method="post" enctype="multipart/form-data">
       <div><input type="text" name="commonName" placeholder="Common Name"></div>
       <div><label for="">leaf</label><input type="file" name="leaf" /></div>
@@ -28,6 +35,12 @@
     </table>
 
     <script type="text/javascript">
+      function onSignIn(googleUser) {
+        var idToken = googleUser.getAuthResponse().id_token;
+        axios.defaults.headers.common['Authorization'] = idToken;
+        document.cookie = 'auth='+idToken;
+      }
+
       var sightingList = new Vue({
         el: "#sighting-list",
         data: {
