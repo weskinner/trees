@@ -9,7 +9,7 @@ Create a social network that gamifies:
 
 
 # Current Sprint
-Improve sighting data model and form UX/UI
+Build pages with dummy data
 
 
 # MVP
