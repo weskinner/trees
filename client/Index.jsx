@@ -27,9 +27,8 @@ class Index extends React.Component {
 
     return (
       <div>
-        <h2>All Sightings</h2>
         <Link to="/sighting">Create Sighting</Link>
-        <table>
+        <table className="table">
           <thead>
             <tr>
               <th>Common Name</th>

@@ -10,10 +10,18 @@ class CreateSighting extends React.Component {
   render() {
     return (
       <form action="/submit" method="post" encType="multipart/form-data">
-        <div><input type="text" name="commonName" placeholder="Common Name" /></div>
-        <div><label>leaf</label><input type="file" name="leaf" /></div>
-        <div><label>tree</label><input type="file" name="tree" /></div>
-        <div><input type="submit" /></div>
+        <div className="form-group">
+          <label>Image 1</label><input className="form-control-file" type="file" name="leaf" />
+        </div>
+        <div className="form-group">
+          <label>Image 2</label><input className="form-control-file" type="file" name="leaf" />
+        </div>
+        <div className="form-group">
+          <label>Image 3</label><input className="form-control-file" type="file" name="leaf" />
+        </div>
+        <div className="form-group">
+          <input className="form-control" type="submit" />
+        </div>
       </form>
     )
   }
