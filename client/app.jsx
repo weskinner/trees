@@ -1,10 +1,10 @@
-require('dotenv').config()
-
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom"
 import Index from './Index.jsx'
 import CreateSighting from './CreateSighting.jsx'
+import Sighting from './Sighting.jsx'
+import Profile from './Profile.jsx'
 
 function App() {
   return (
@@ -27,6 +27,8 @@ function App() {
           <div className="col">
             <Route path="/" exact component={Index} />
             <Route path="/sighting" exact component={CreateSighting} />
+            <Route path="/sighting/:id" exact component={Sighting} />
+            <Route path="/profile" exact component={Profile} />
           </div>
         </div>
       </div>
@@ -41,6 +43,7 @@ if (process.env.NODE_ENV == 'production') {
   }
 }
 else {
+  console.log("Dev Mode: Google Sign In callback is mocked.")
   document.cookie = 'auth=dev';
 }
 

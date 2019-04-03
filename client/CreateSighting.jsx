@@ -11,13 +11,13 @@ class CreateSighting extends React.Component {
     return (
       <form action="/submit" method="post" encType="multipart/form-data">
         <div className="form-group">
-          <label>Image 1</label><input className="form-control-file" type="file" name="leaf" />
+          <label>Image 1</label><input className="form-control-file" type="file" name="images" />
         </div>
         <div className="form-group">
-          <label>Image 2</label><input className="form-control-file" type="file" name="leaf" />
+          <label>Image 2</label><input className="form-control-file" type="file" name="images" />
         </div>
         <div className="form-group">
-          <label>Image 3</label><input className="form-control-file" type="file" name="leaf" />
+          <label>Image 3</label><input className="form-control-file" type="file" name="images" />
         </div>
         <div className="form-group">
           <input className="form-control" type="submit" />

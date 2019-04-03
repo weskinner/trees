@@ -7,7 +7,7 @@ class Index extends React.Component {
     super(props)
     this.state = {
       sightings: [
-        {commonName: "Oak", leafFile: {}, treeFile: {}}
+        {id: 1, commonName: "Oak", leafFile: {}, treeFile: {}}
       ]
     }
   }
@@ -18,7 +18,7 @@ class Index extends React.Component {
     const sightings = this.state.sightings.map((s,i) => {
       return (
         <tr key={i}>
-          <td>{s.commonName}</td>
+          <td><Link to={'/sighting/'+s.id}>{s.commonName}</Link></td>
           <td><img src={'uploads/' + s.leafFile.filename} width="100" height="100" /></td>
           <td><img src={'uploads/' + s.treeFile.filename} width="100" height="100" /></td>
         </tr>

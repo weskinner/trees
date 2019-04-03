@@ -35,6 +35,8 @@ A form for capturing a sighting in the wild
 - Display a list of identifications for this sighting
     - Ability to upvote an identification
 - Action to submit an identification for this sighting
+- Display a list of comments for this sighting
+    - Ability to add a comment
 
 ### Create Identification
 - modal to capture suggested species name for a sighting
