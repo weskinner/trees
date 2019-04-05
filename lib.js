@@ -4,32 +4,37 @@ const gApiClient = new OAuth2Client(googleClientId)
 
 module.exports = {
   auth: async function verifyIdToken(token) {
-    const ticket = await gApiClient.verifyIdToken({
-        idToken: token,
-        audience: googleClientId
-    })
-    const payload = ticket.getPayload()
-    const userId = payload['sub']
-    const clientId = payload['aud']
-    const expiresAt = payload['exp']
+    if (process.env.NODE_ENV == 'production') {
+      const ticket = await gApiClient.verifyIdToken({
+          idToken: token,
+          audience: googleClientId
+      })
+      const payload = ticket.getPayload()
+      const userId = payload['sub']
+      const clientId = payload['aud']
+      const expiresAt = payload['exp']
 
-    if (clientId != googleClientId) {
-      throw new AuthError("Verify failed.  Client ID should match env config. Seeing " + clientId)
-    } else if ((Date.now()/1000) > expiresAt) {
-      throw new AuthError("Verify failed. Token is expired.")
-    }
-    console.log('Token verified.')
+      if (clientId != googleClientId) {
+        throw new AuthError("Verify failed.  Client ID should match env config. Seeing " + clientId)
+      } else if ((Date.now()/1000) > expiresAt) {
+        throw new AuthError("Verify failed. Token is expired.")
+      }
+      console.log('Token verified.')
 
-    console.log('Looking for profile.')
-    var profile = await db.collection('profiles').findOne({'uid': userId});
-    if(profile) {
-      console.log('Profile found.')
+      console.log('Looking for profile.')
+      var profile = await db.collection('profiles').findOne({'uid': userId});
+      if(profile) {
+        console.log('Profile found.')
+      } else {
+        console.log('Creating profile.')
+        profile = await db.collection('profiles').insertOne({uid: userId})
+      }
+
+      return profile
     } else {
-      console.log('Creating profile.')
-      profile = await db.collection('profiles').insertOne({uid: userId})
+      return 1
     }
 
-    return profile
   },
 
   asyncHandler: function asyncHandler(fn) {
