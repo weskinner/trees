@@ -14,6 +14,7 @@ router.post(
   multipartParser,
   lib.asyncHandler(
     async (req, res, next) => {
+      console.log('HERE')
       const uid = await lib.auth(req.cookies.auth)
 
       const sighting = {
