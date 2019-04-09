@@ -1,5 +1,4 @@
 node_modules/
-public/uploads/
 .cache/
 dist/
-public/
+rest-api/static/
