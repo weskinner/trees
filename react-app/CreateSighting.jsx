@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from "react-router-dom"
-import axios from 'axios'
-import imageCompression from 'browser-image-compression'  
+import sightings from './service/sighting'
 
 export default
 class CreateSighting extends React.Component {
@@ -11,68 +10,7 @@ class CreateSighting extends React.Component {
     this.fileInput = React.createRef();
     this.notes = React.createRef();
   }
-  onUploadProgress(progressEvent) {
-    if(progressEvent.lengthComputable) {
-      const progress = (progressEvent.loaded / progressEvent.total) * 100;
 
-      this.setState({showProgress: true, progress, progressTitle: 'Uploading'})
-    }
-  }
-  displayImagePreviews() {
-    let selectedImageUrls = []
-    const fileList = this.fileInput.current.files
-    for (var i = 0; i < fileList.length; i++) {
-      selectedImageUrls.push(URL.createObjectURL(fileList.item(i)))
-    }
-
-    this.setState({selectedImageUrls})
-  }
-  submit(e) {
-    e.preventDefault()
-    const compressionOptions = { 
-      maxSizeMB: 0.2,          // (default: Number.POSITIVE_INFINITY)
-      maxWidthOrHeight: 800,   // compressedFile will scale down by ratio to a point that width or height is smaller than maxWidthOrHeight (default: undefined)
-      useWebWorker: true,      // optional, use multi-thread web worker, fallback to run in main-thread (default: true)
-      maxIteration: 10        // optional, max number of iteration to compress the image (default: 10)
-    }
-    
-    console.log('compressing images')
-    this.setState({showProgress: true, progress: 2, progressTitle: "Compressing Images"})
-    const rawFileList = this.fileInput.current.files
-    let compressionPromises = []
-    for (var i = 0; i < rawFileList.length; i++) {
-      let p = imageCompression(rawFileList.item(i), compressionOptions).then(f => {
-        console.log('compressed', f)
-        let progress = (i / rawFileList.length) * 100
-        console.log('compression progress', progress)
-        this.setState({progress})
-        return f
-      })
-
-      compressionPromises.push(p)
-    }
-
-    Promise.all(compressionPromises)
-      .catch(err => console.log('Error compressing images', err))
-      .then(compressedFileList => {
-
-        const formData = new FormData()
-        for (var i = 0; i < compressedFileList.length; i++) {
-          const file = compressedFileList[i]
-          formData.append('imageFiles', file)
-        }
-        formData.append('notes', this.notes.current.value)
-        
-        axios.post('/api/sighting', formData, {onUploadProgress: this.onUploadProgress.bind(this)})
-          .catch(err => console.log(err))
-          .then(res => {
-           
-            console.log(res)
-            this.setState({showProgress: false})
-          })
-
-      })
-  }
   render() {
     return (
       <div>
@@ -111,4 +49,26 @@ class CreateSighting extends React.Component {
       </div>
     )
   }
+
+  submit(e) {
+    e.preventDefault()
+    
+    sightings
+      .compressFileList(this.fileInput.current.files)
+      .catch(err => console.log('Error compressing images', err))
+      .then(images => sightings.create({images, notes: this.notes.current.value}))
+      .catch(err => console.log('Error creating sighting', err))
+      .then(res => console.log('created sighting', res))
+  }
+
+  displayImagePreviews() {
+    let selectedImageUrls = []
+    const fileList = this.fileInput.current.files
+    for (var i = 0; i < fileList.length; i++) {
+      selectedImageUrls.push(URL.createObjectURL(fileList.item(i)))
+    }
+
+    this.setState({selectedImageUrls})
+  }
+  
 }

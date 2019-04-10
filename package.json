@@ -23,11 +23,19 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.0",
-    "superagent": "^5.0.2"
+    "superagent": "^5.0.2",
+    "superagent-prefix": "0.0.2"
   },
   "devDependencies": {
     "mongo-unit": "^1.4.4",
     "nodemon": "^1.18.10",
     "supertest": "^4.0.2"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "rest-api/static/*",
+      "react-app/*"
+    ],
+    "verbose": true
   }
 }
