@@ -16,7 +16,7 @@ router.post(
     async (req, res, next) => {
       const uid = await lib.auth(req.cookies.auth)
 
-      const sighting = {
+      var sighting = {
         author: uid,
         images: req.files.imageFiles,
         notes: req.body.notes,
@@ -25,8 +25,9 @@ router.post(
       }
 
       const db = await req.db
-      await db.collection('sightings').insertOne(sighting)
-      res.sendStatus(201)
+      var result = await db.collection('sightings').insertOne(sighting)
+      sighting._id = result.insertedId
+      res.status(201).json(sighting)
     }
   )
 )

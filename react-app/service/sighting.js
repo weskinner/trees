@@ -1,7 +1,13 @@
-import superagent from '../lib/superagent'
-import imageCompression from 'browser-image-compression'
+const superagent = require('../lib/superagent')
+if(!process.env.NODE_ENV == "testing") {
+  var imageCompression = require('browser-image-compression')
+} else {
+  var imageCompression = function(file) {
+    Promise.resolve({name: 'test'})
+  }
+}
 
-export default {
+module.exports = {
   create,
   compressFileList
 }

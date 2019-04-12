@@ -4,6 +4,7 @@ module.exports = function initDbApp(config) {
   const client = new MongoClient(config.dbUrl, { useNewUrlParser: true });
 
   var pConn = client.connect().catch(err => console.log(err));
+  console.log('db',`connecting mongo client to ${config.dbUrl}`)
 
   return {
     middleware: function() {
@@ -15,7 +16,7 @@ module.exports = function initDbApp(config) {
     },
 
     shutdown: function() {
-      pConn.then(c => c.close())
+      return pConn.then(c => c.close())
     }
   }
 }

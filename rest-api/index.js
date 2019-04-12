@@ -26,7 +26,7 @@ module.exports = function(config) {
 
   app.shutdown = function() {
     console.log("Shutting down rest-api")
-    db.shutdown()
+    return db.shutdown()
   }
 
   return app

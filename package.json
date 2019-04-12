@@ -27,6 +27,7 @@
     "superagent-prefix": "0.0.2"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "mongo-unit": "^1.4.4",
     "nodemon": "^1.18.10",
     "supertest": "^4.0.2"
